@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novela</title>
+  <link rel="stylesheet" href="/static/css/foundation.min.css">  
+  {% block styles %}{% endblock %}
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+
+<body>
+  <div id="main-content">  
+    <div class="grid-x grid-padding-x">
+      <div class="large-11 cell">
+        <input id="search" type="text">
+      </div>
+      <div class="large-1 cell text-right">
+        <button id="btn-search" type="button" class="button">Buscar</button>
+      </div>
+    </div>
+    <br />
+    <div class="grid-x grid-padding-x">
+      <div class="large-12 cell">
+        <div class="callout secondary">
+          <pre id="result"></pre>
+        </div>
+      </div>
+    </div>
+  </div>    
+
+  <script src="/static/js/vendor/jquery.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      $('#btn-search').click(function() {
+        $.get('/api/sujetos', { query: $('#search').val() })
+          .done(function(data) {
+            $('#result').html(JSON.stringify(data, null, 4));
+          })
+          .fail(function(xhr) {
+            if (xhr.responseJSON) {
+              alert(xhr.responseJSON.error);
+            } else {
+              alert('Ocurrió un error');
+            }
+          });
+      });
+    });
+  </script>
+ 
+</body>
+</html>
